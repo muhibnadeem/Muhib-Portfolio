@@ -5,7 +5,7 @@ import { useRef, useState, useEffect, CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import { IconType } from 'react-icons'
-import { FiSun, FiMoon, FiMenu, FiX, FiDownload } from 'react-icons/fi'
+import { FiSun, FiMoon, FiMenu, FiX, FiDownload, FiCode, FiBriefcase, FiTrendingUp, FiUsers, FiTarget } from 'react-icons/fi'
 import { FaGithub, FaLinkedin, FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import {
   SiHtml5, SiCss, SiJavascript, SiTypescript, SiReact, SiNextdotjs,
@@ -85,30 +85,35 @@ const experiences = [
     company: "Ecoflitz (UK)",
     period: "Jul 2025 - Oct 2025",
     desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
+    icon: FiCode,
   },
   {
     title: "Marketing Intern",
     company: "Air University Incubation Center (Air University)",
     period: "Oct 2025 - Jan 2026",
     desc: "Completed another paid remote internship focused on digital marketing. Developed and executed social media campaigns, created content, and analyzed performance metrics to increase brand awareness and engagement for the incubation center.",
+    icon: FiTarget,
   },
   {
     title: "Chief Executive Officer",
     company: "Khuda Hafiz (Startup)",
     period: "2025 - Present",
     desc: "Founded a digital funeral management startup serving clients across Pakistan. Led development of mobile and web apps using React Native, Next.js, Node.js, MongoDB, Tailwind, and Gemini API. Integrated AI chatbot, therapist agent, and live location features. Oversaw product strategy, marketing, and vendor operations. Achievements: 1st Runner-up at Air University Incubation Center; representing in Hult Prize 2025.",
+    icon: FiBriefcase,
   },
   {
     title: "Marketing Director",
     company: "Google Developer Groups (Air University)",
     period: "2024 - Present",
     desc: "Managed promotional strategies for AirMUN'25 and AirTech'25, boosting participation by 800+ and creating visual and written content for digital campaigns and event branding.",
+    icon: FiTrendingUp,
   },
   {
     title: "Sponsorship Lead",
     company: "Microsoft Learn Student Ambassador Society (Air University)",
     period: "2025 - Present",
     desc: "Negotiated and secured sponsorships for university-level tech events and workshops, collaborating with cross-functional teams to build brand partnerships and enhance visibility.",
+    icon: FiUsers,
   },
 ]
 
@@ -237,6 +242,7 @@ export default function Home() {
   const [omniOpen, setOmniOpen] = useState(false)
   const [activeTheme, setActiveTheme] = useState<Theme>(themes[0])
   const holdTimerRef = useRef<number | null>(null)
+  const [expandedExp, setExpandedExp] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     // Get initial theme preference (fallback to system preference)
@@ -324,6 +330,11 @@ export default function Home() {
     setMenuOpen(false)
   }
 
+  const toggleExp = (company: string) => {
+    setExpandedExp((prev) => ({ ...prev, [company]: !prev[company] }))
+  }
+
+
   const themeStyle = {
     '--accent': activeTheme.accent,
     '--accent-strong': activeTheme.accentStrong,
@@ -350,6 +361,14 @@ export default function Home() {
             .omni-orbit {
               animation: omni-orbit 14s linear infinite;
             }
+            .exp-scroll {
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+            }
+            .exp-scroll::-webkit-scrollbar {
+              width: 0;
+              height: 0;
+            }
           `}</style>
 
       {/* Navbar */}
@@ -369,7 +388,8 @@ export default function Home() {
           {/* Right Section */}
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => toggleTheme()} 
+              type="button"
+              onPointerDown={() => toggleTheme()} 
               className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition flex items-center justify-center"
               aria-label="Toggle theme"
             >
@@ -524,26 +544,58 @@ export default function Home() {
       {/* Experience */}
       <section ref={sections.experience} className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">Experience</h2>
-          <div className="space-y-8">
-            {experiences.map((exp, i) => (
-              <motion.div
-                key={exp.company}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-lg bg-gray-50 dark:bg-[#0a0e27] border-l-4 border-[color:var(--accent)] hover:shadow-lg transition"
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="text-xl font-semibold text-[color:var(--accent)]">{exp.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{exp.company}</p>
+          <h2 className="text-3xl font-bold mb-10 text-center">Experience</h2>
+
+          <div className="exp-scroll flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4">
+            {experiences.map((exp, i) => {
+              const isExpanded = !!expandedExp[exp.company]
+              const short =
+                exp.desc.length > 160 ? `${exp.desc.slice(0, 160)}...` : exp.desc
+              const Icon = exp.icon ?? FiBriefcase
+              return (
+                <motion.div
+                  key={exp.company}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  className="min-w-[280px] md:min-w-[360px] snap-start p-5 rounded-xl bg-white dark:bg-[#0a0e27] border border-[color:var(--accent-30)] shadow-sm hover:shadow-lg transition"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-[color:var(--accent-10)] text-[color:var(--accent)] flex items-center justify-center text-xl shadow-[0_0_14px_var(--accent-glow)]">
+                        <Icon />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {exp.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{exp.company}</p>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{exp.period}</span>
-                </div>
-                <p className="text-gray-700 dark:text-gray-300">{exp.desc}</p>
-              </motion.div>
-            ))}
+                  <p className="mt-3 text-xs leading-relaxed text-gray-700 dark:text-gray-300">
+                    {isExpanded ? exp.desc : short}
+                  </p>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-[11px] text-gray-500 dark:text-gray-400">
+                      {exp.period}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => toggleExp(exp.company)}
+                      className="text-[11px] font-semibold text-[color:var(--accent)] hover:text-[color:var(--accent-soft)] transition"
+                    >
+                      {isExpanded ? 'Show less' : 'Learn More'}
+                    </button>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <span className="h-1.5 w-6 rounded-full bg-gray-300 dark:bg-gray-700" />
+            <span className="h-1.5 w-3 rounded-full bg-[color:var(--accent)]" />
+            <span className="h-1.5 w-3 rounded-full bg-gray-300 dark:bg-gray-700" />
           </div>
         </div>
       </section>
