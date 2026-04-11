@@ -241,7 +241,6 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [omniOpen, setOmniOpen] = useState(false)
   const [activeTheme, setActiveTheme] = useState<Theme>(themes[0])
-  const holdTimerRef = useRef<number | null>(null)
   const [expandedExp, setExpandedExp] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -289,32 +288,6 @@ export default function Home() {
     } catch (e) {}
   }, [dark])
 
-  useEffect(() => {
-    if (!omniOpen) return
-    const close = () => setOmniOpen(false)
-    window.addEventListener('pointerup', close)
-    window.addEventListener('pointercancel', close)
-    return () => {
-      window.removeEventListener('pointerup', close)
-      window.removeEventListener('pointercancel', close)
-    }
-  }, [omniOpen])
-
-  const startHold = () => {
-    if (holdTimerRef.current) {
-      window.clearTimeout(holdTimerRef.current)
-    }
-    holdTimerRef.current = window.setTimeout(() => {
-      setOmniOpen(true)
-    }, 1200)
-  }
-
-  const endHold = () => {
-    if (holdTimerRef.current) {
-      window.clearTimeout(holdTimerRef.current)
-      holdTimerRef.current = null
-    }
-  }
 
   const sections = {
     home: useRef(null),
@@ -464,7 +437,11 @@ export default function Home() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="flex-1 flex justify-center mt-10 md:mt-0">
-          <div className="relative">
+          <div
+            className="relative"
+            onMouseEnter={() => setOmniOpen(true)}
+            onMouseLeave={() => setOmniOpen(false)}
+          >
             {omniOpen && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-0">
                 <div className="w-[300px] h-[300px] rounded-full border border-[color:var(--accent-30)] shadow-[0_0_24px_var(--accent-glow)]" />
@@ -479,12 +456,8 @@ export default function Home() {
             >
               <button
                 type="button"
-                onPointerDown={startHold}
-                onPointerUp={endHold}
-                onPointerLeave={endHold}
-                onPointerCancel={endHold}
                 className="relative w-100 h-100 rounded-full overflow-hidden focus:outline-none translate-x-3 -translate-y-9"
-                aria-label="Hold to choose a theme"
+                aria-label="Hover to choose a theme"
               >
                 <img src={activeTheme.image} className="w-full h-full object-contain rounded-full" />
               </button>
