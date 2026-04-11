@@ -87,6 +87,12 @@ const experiences = [
     desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
   },
   {
+    title: "Marketing Intern",
+    company: "Air University Incubation Center (Air University)",
+    period: "Oct 2025 - Jan 2026",
+    desc: "Completed another paid remote internship focused on digital marketing. Developed and executed social media campaigns, created content, and analyzed performance metrics to increase brand awareness and engagement for the incubation center.",
+  },
+  {
     title: "Chief Executive Officer",
     company: "Khuda Hafiz (Startup)",
     period: "2025 - Present",
@@ -427,13 +433,13 @@ export default function Home() {
           </h3>
           <motion.a
             href="/Muhib-cv.pdf"
-            download
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 mt-8 bg-[color:var(--accent)] hover:bg-[color:var(--accent-strong)] px-6 py-3 rounded-full font-semibold transition shadow-lg"
           >
-            <FiDownload className="text-lg" />
-            Download My CV
+            View My CV
           </motion.a>
         </motion.div>
 
