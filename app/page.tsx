@@ -242,6 +242,7 @@ export default function Home() {
   const [omniOpen, setOmniOpen] = useState(false)
   const [activeTheme, setActiveTheme] = useState<Theme>(themes[0])
   const [isTouch, setIsTouch] = useState(false)
+  const omniRef = useRef<HTMLDivElement | null>(null)
   const [expandedExp, setExpandedExp] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -307,6 +308,17 @@ export default function Home() {
   const toggleExp = (company: string) => {
     setExpandedExp((prev) => ({ ...prev, [company]: !prev[company] }))
   }
+
+  useEffect(() => {
+    if (!omniOpen || !isTouch) return
+    const handlePointerDown = (e: PointerEvent) => {
+      const target = e.target as Node | null
+      if (target && omniRef.current?.contains(target)) return
+      setOmniOpen(false)
+    }
+    window.addEventListener('pointerdown', handlePointerDown)
+    return () => window.removeEventListener('pointerdown', handlePointerDown)
+  }, [omniOpen, isTouch])
 
 
   const themeStyle = {
@@ -439,6 +451,7 @@ export default function Home() {
 
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="flex-1 flex justify-center mt-10 md:mt-0">
           <div
+            ref={omniRef}
             className="relative"
             onPointerEnter={(e) => {
               if (e.pointerType === 'touch' || isTouch) return
