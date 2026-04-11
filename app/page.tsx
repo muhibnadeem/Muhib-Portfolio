@@ -241,6 +241,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [omniOpen, setOmniOpen] = useState(false)
   const [activeTheme, setActiveTheme] = useState<Theme>(themes[0])
+  const [isTouch, setIsTouch] = useState(false)
   const [expandedExp, setExpandedExp] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -439,8 +440,14 @@ export default function Home() {
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="flex-1 flex justify-center mt-10 md:mt-0">
           <div
             className="relative"
-            onMouseEnter={() => setOmniOpen(true)}
-            onMouseLeave={() => setOmniOpen(false)}
+            onPointerEnter={(e) => {
+              if (e.pointerType === 'touch' || isTouch) return
+              setOmniOpen(true)
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === 'touch' || isTouch) return
+              setOmniOpen(false)
+            }}
           >
             {omniOpen && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-0">
@@ -456,6 +463,15 @@ export default function Home() {
             >
               <button
                 type="button"
+                onPointerDown={(e) => {
+                  if (e.pointerType === 'touch') {
+                    setIsTouch(true)
+                    setOmniOpen((v) => !v)
+                  }
+                }}
+                onClick={() => {
+                  if (!isTouch) setOmniOpen((v) => !v)
+                }}
                 className="relative w-100 h-100 rounded-full overflow-hidden focus:outline-none translate-x-3 -translate-y-9"
                 aria-label="Hover to choose a theme"
               >
@@ -471,7 +487,8 @@ export default function Home() {
                     <button
                       key={theme.name}
                       type="button"
-                      onPointerUp={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setActiveTheme(theme)
                         setOmniOpen(false)
                       }}
