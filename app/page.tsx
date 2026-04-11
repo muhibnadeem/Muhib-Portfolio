@@ -197,9 +197,9 @@ const projects = [
     title: "Mr Fix & Build",
     desc: "A modern service marketplace platform where users can find and hire professionals for home services with a clean UI and smooth user experience.",
     tech: ["Next.js", "React", "Tailwind CSS", "API Integration"],
-    image: "https://via.placeholder.com/400x200?text=Mr+Fix+%26+Build",
+    image: "mrfixandbuild.png",
     live: "https://mr-fix-and-build.vercel.app",
-    github: "https://github.com/yourusername/mr-fix-and-build",
+    github: "https://github.com/muhibnadeem/Mr.FixAndBuild.git",
   },
   {
     title: "Bus Route Planner",
@@ -213,7 +213,7 @@ const projects = [
     title: "Creepy Link",
     desc: "A creative experimental web project that explores user interaction and curiosity-driven navigation through dynamic link behavior. Designed to engage users with unexpected transitions and immersive UI patterns.",
     tech: ["Next.js", "React", "JavaScript", "UI/UX"],
-    image: "https://via.placeholder.com/400x200?text=Creepy+Link",
+    image: "creepylink.png",
     live: "https://creepy-link.vercel.app/",
     github: "https://github.com/yourusername/creepy-link",
   },
@@ -221,7 +221,7 @@ const projects = [
     title: "AI Image Detector",
     desc: "An AI-powered web application that analyzes images to detect patterns and classify content using machine learning models. Designed with a clean interface and optimized for fast and accurate predictions.",
     tech: ["Next.js", "AI/ML", "API Integration", "Python/Model"],
-    image: "https://via.placeholder.com/400x200?text=AI+Image+Detector",
+    image: "imagedetector.png",
     live: "YOUR_LIVE_LINK",
     github: "https://github.com/muhibnadeem/AI-Image-Detector.git",
   },
@@ -604,7 +604,7 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section ref={sections.skills} className="py-20 px-6 text-center">
+      <section ref={sections.skills} className="py-15 px-6 text-center">
         <h2 className="text-3xl font-bold">Skills and Frameworks</h2>
 
         <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
