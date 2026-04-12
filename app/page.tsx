@@ -284,6 +284,7 @@ export default function Home() {
   const [activeExperience, setActiveExperience] = useState<number | null>(null)
   const expScrollRef = useRef<HTMLDivElement | null>(null)
   const contactScrollRef = useRef<HTMLDivElement | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     // Get initial theme preference (fallback to system preference)
@@ -303,6 +304,16 @@ export default function Home() {
     
     return () => {
     }
+  }, [])
+
+  // Track mobile breakpoint for infinite scroll
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const toggleTheme = () => {
@@ -712,7 +723,7 @@ export default function Home() {
 
           {activeExperience === null ? (
             <div ref={expScrollRef} className="flex md:grid gap-6 md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none py-4 px-2 -mx-2">
-              {[...experiences, ...experiences, ...experiences].map((exp, i) => {
+              {(isMobile ? [...experiences, ...experiences, ...experiences] : experiences).map((exp, i) => {
                 const actualIndex = i % experiences.length
                 const Icon = exp.icon ?? FiBriefcase
                 return (
@@ -982,7 +993,7 @@ export default function Home() {
 
           {/* Contact Info Cards */}
           <div ref={contactScrollRef} className="flex md:grid gap-6 md:grid-cols-3 mb-12 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory py-4 px-2 -mx-2">
-            {[...contactCards, ...contactCards, ...contactCards].map((card, i) => {
+            {(isMobile ? [...contactCards, ...contactCards, ...contactCards] : contactCards).map((card, i) => {
               const actualIndex = i % contactCards.length
               const CardIcon = card.icon as IconType | null
               
