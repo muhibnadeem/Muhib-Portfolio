@@ -5,7 +5,7 @@ import { useRef, useState, useEffect, CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import { IconType } from 'react-icons'
-import { FiSun, FiMoon, FiMenu, FiX, FiDownload, FiCode, FiBriefcase, FiTrendingUp, FiUsers, FiTarget } from 'react-icons/fi'
+import { FiMenu, FiX, FiDownload, FiCode, FiBriefcase, FiTrendingUp, FiUsers, FiTarget } from 'react-icons/fi'
 import { FaGithub, FaLinkedin, FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import {
   SiHtml5, SiCss, SiJavascript, SiTypescript, SiReact, SiNextdotjs,
@@ -317,28 +317,24 @@ export default function Home() {
   }, [])
 
   const toggleTheme = () => {
-    const next = !dark
-    setDark(next)
-    try {
-      document.documentElement.classList.toggle('dark', next)
-      document.body.classList.toggle('dark', next)
-      localStorage.setItem('theme', next ? 'dark' : 'light')
-    } catch (e) {
-      // ignore
-    }
+    setDark((prevDark) => !prevDark)
   }
 
   // Keep DOM in sync with `dark` state and persist preference
   useEffect(() => {
+    if (typeof window === 'undefined') return
     try {
-      document.documentElement.classList.toggle('dark', dark)
-      document.body.classList.toggle('dark', dark)
+      if (dark) {
+        document.documentElement.classList.add('dark')
+        document.body.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+        document.body.classList.remove('dark')
+      }
+      localStorage.setItem('theme', dark ? 'dark' : 'light')
     } catch (e) {
       // ignore
     }
-    try {
-      localStorage.setItem('theme', dark ? 'dark' : 'light')
-    } catch (e) {}
   }, [dark])
 
 
@@ -541,15 +537,6 @@ export default function Home() {
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            <button 
-              type="button"
-              onPointerDown={() => toggleTheme()} 
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition flex items-center justify-center"
-              aria-label="Toggle theme"
-            >
-              {dark ? <FiSun className="text-lg" /> : <FiMoon className="text-lg" />}
-            </button>
-
             <button onClick={() => scrollTo(sections.contact)} className="hidden sm:block bg-[color:var(--accent)] px-4 py-2 rounded-full hover:scale-105 transition font-semibold text-sm">
               Contact
             </button>
@@ -772,7 +759,7 @@ export default function Home() {
                       {exp.desc.length > 160 ? `${exp.desc.slice(0, 160)}...` : exp.desc}
                     </p>
                     <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-500">{exp.period}</span>
+                      <span className="text-[11px] text-gray-700">{exp.period}</span>
                       <span
                         className="text-[11px] font-semibold"
                         style={{ color: exp.accentStrong }}
@@ -826,10 +813,10 @@ export default function Home() {
                       <h3 className="mt-4 text-2xl font-bold text-gray-950">
                         {activeExp!.title}
                       </h3>
-                      <p className="mt-1 text-sm font-medium text-gray-700">
+                      <p className="mt-1 text-sm font-medium text-gray-800">
                         {activeExp!.company}
                       </p>
-                      <p className="mt-2 text-sm text-gray-500">{activeExp!.period}</p>
+                      <p className="mt-2 text-sm text-gray-900">{activeExp!.period}</p>
                     </div>
                   </div>
                   <div
@@ -844,7 +831,7 @@ export default function Home() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
-                  <p className="text-base leading-8 text-gray-800">
+                  <p className="text-base leading-8 text-gray-900">
                     {activeExp!.desc}
                   </p>
                   <div
@@ -1196,5 +1183,3 @@ export default function Home() {
     </div>
   )
 }
-
-
