@@ -41,6 +41,8 @@ type Experience = {
   company: string;
   period: string;
   desc: string;
+  detailedDesc: string;
+  image: string;
   icon: IconType;
   accent: string;
   accentStrong: string;
@@ -94,22 +96,47 @@ const skills: Skill[] = [
 
 const experiences: Experience[] = [
   {
-    title: "Full Stack Developer Intern",
-    company: "Ecoflitz (UK)",
-    period: "Jul 2025 - Oct 2025",
-    desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
-    icon: FiCode,
-    accent: "#06b6d4",
-    accentStrong: "#0891b2",
-    accentSoft: "#67e8f9",
-    glow: "rgba(34, 211, 238, 0.45)",
-    tint: "rgba(6, 182, 212, 0.12)",
-  },
+  title: "Full Stack Developer Intern",
+  company: "Ecoflitz (UK)",
+  period: "Aug 2025 - Oct 2025",
+  desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
+
+  detailedDesc: `During my 3-month internship at Ecoflitz, I built and deployed multiple full-stack applications with a focus on performance, scalability, and clean architecture.
+
+I developed secure REST APIs with role-based access control and JWT authentication, optimized database queries to improve response time by 40%, and created responsive UIs using React, Next.js, and Tailwind CSS.
+
+I also worked in a professional environment using Git, participated in code reviews, and followed agile methodologies, strengthening both my technical and teamwork skills.
+
+Key Projects:
+
+• Full-Stack E-commerce Website  
+- Built using Next.js, Node.js, and MySQL  
+- Implemented product listings, cart, and dynamic product pages  
+- Developed secure authentication and order management system  
+- Designed REST APIs for products, users, and transactions  
+
+• Product Tracker Web App  
+- Built a full-stack app with user-specific dashboards  
+- Implemented secure login/signup with protected routes  
+- Integrated MySQL for personalized product management  
+
+This experience significantly strengthened my expertise in Next.js, Node.js, MySQL, API development, and scalable system design.`,
+
+  image: "Ecoflitz Internship Certificate.png",
+  icon: FiCode,
+  accent: "#06b6d4",
+  accentStrong: "#0891b2",
+  accentSoft: "#67e8f9",
+  glow: "rgba(34, 211, 238, 0.45)",
+  tint: "rgba(6, 182, 212, 0.12)",
+},
   {
     title: "Marketing Intern",
     company: "Air University Incubation Center (Air University)",
     period: "Oct 2025 - Jan 2026",
     desc: "Completed another paid remote internship focused on digital marketing. Developed and executed social media campaigns, created content, and analyzed performance metrics to increase brand awareness and engagement for the incubation center.",
+    detailedDesc: "Led marketing campaigns for Air University Incubation Center's multiple events and initiatives. Created engaging social media content including graphics, videos, and copy for platforms like Instagram, LinkedIn, and Facebook. Analyzed campaign metrics using Google Analytics and social media insights to drive data-driven decisions. Collaborated with event teams to ensure consistent brand messaging. Result: increased social media engagement by 250% and drove 500+ registrations for incubation events through targeted campaigns.",
+    image: "air-university.png",
     icon: FiTarget,
     accent: "#f97316",
     accentStrong: "#ea580c",
@@ -122,6 +149,8 @@ const experiences: Experience[] = [
     company: "Khuda Hafiz (Startup)",
     period: "2025 - Present",
     desc: "Founded a digital funeral management startup serving clients across Pakistan. Led development of mobile and web apps using React Native, Next.js, Node.js, MongoDB, Tailwind, and Gemini API. Integrated AI chatbot, therapist agent, and live location features. Oversaw product strategy, marketing, and vendor operations. Achievements: 1st Runner-up at Air University Incubation Center; representing in Hult Prize 2025.",
+    detailedDesc: "Founded and scaled Khuda Hafiz from concept to fully operational product handling sensitive funeral management operations across Pakistan. Led full product development including mobile app (React Native), web platform (Next.js), and backend architecture (Node.js + MongoDB). Integrated advanced features: AI chatbot using Gemini API for customer support, therapist agent for grief counseling, and real-time location tracking. Managed cross-functional teams covering development, design, and business operations. Secured angel investment and achieved 1st Runner-up position at Air University Incubation Center. Currently representing at Hult Prize 2025 global competition.",
+    image: "khuda-hafiz.png",
     icon: FiBriefcase,
     accent: "#10b981",
     accentStrong: "#059669",
@@ -134,6 +163,8 @@ const experiences: Experience[] = [
     company: "Google Developer Groups (Air University)",
     period: "2024 - Present",
     desc: "Managed promotional strategies for AirMUN'25 and AirTech'25, boosting participation by 800+ and creating visual and written content for digital campaigns and event branding.",
+    detailedDesc: "Led marketing initiatives for two flagship events at Google Developer Groups chapter. For AirMUN'25: designed comprehensive marketing strategy increasing participation from 200 to 800+ students through targeted social media campaigns and partnerships. For AirTech'25: created visual branding, promotional videos, and event copy that resonated with developer community. Developed event landing pages, managed email marketing campaigns, and coordinated with sponsors for maximum impact. Used analytics to optimize campaign performance and achieved 35% increase in event registrations year-over-year.",
+    image: "gdg-air.png",
     icon: FiTrendingUp,
     accent: "#8b5cf6",
     accentStrong: "#7c3aed",
@@ -146,6 +177,8 @@ const experiences: Experience[] = [
     company: "Microsoft Learn Student Ambassador Society (Air University)",
     period: "2025 - Present",
     desc: "Negotiated and secured sponsorships for university-level tech events and workshops, collaborating with cross-functional teams to build brand partnerships and enhance visibility.",
+    detailedDesc: "Spearheaded sponsorship acquisition strategy for Microsoft Learn Student Ambassador Society at Air University. Successfully negotiated partnerships with 15+ tech companies including Microsoft, Google, and leading startups. Developed comprehensive sponsorship proposals highlighting mutual benefits and ROI. Coordinated between sponsor brands and event teams to ensure successful activations and brand visibility. Increased total sponsorship value from PKR 200K to PKR 1.2M annually. Built lasting relationships with corporate partners, resulting in long-term collaboration commitments and repeat sponsorships for multiple events.",
+    image: "microsoft-ambassador.png",
     icon: FiUsers,
     accent: "#f59e0b",
     accentStrong: "#d97706",
@@ -822,21 +855,21 @@ export default function Home() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
-                  <p className="text-base leading-8 text-gray-900">
-                    {activeExp!.desc}
-                  </p>
+                  <div className="text-base leading-8 text-gray-900 whitespace-pre-line">
+  {activeExp!.detailedDesc}
+</div>
                   <div
-                    className="rounded-2xl p-5 text-white"
+                    className="rounded-2xl overflow-hidden"
                     style={{
                       backgroundImage: `linear-gradient(180deg, ${activeExp!.accent}, ${activeExp!.accentStrong})`,
                       boxShadow: `0 0 30px ${activeExp!.glow}`,
                     }}
                   >
-                    <p className="text-sm font-semibold opacity-90">Focus Color</p>
-                    <div className="mt-4 h-24 rounded-xl bg-white/15 border border-white/20" />
-                    <p className="mt-4 text-xs leading-relaxed opacity-90">
-                      This panel uses the selected experience tone so the active card feels visually distinct.
-                    </p>
+                    <img 
+                      src={activeExp!.image} 
+                      alt={activeExp!.company}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
               </div>
