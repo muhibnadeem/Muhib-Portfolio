@@ -36,6 +36,19 @@ type Theme = {
   accent2_20: string;
 }
 
+type Experience = {
+  title: string;
+  company: string;
+  period: string;
+  desc: string;
+  icon: IconType;
+  accent: string;
+  accentStrong: string;
+  accentSoft: string;
+  glow: string;
+  tint: string;
+}
+
 const skills: Skill[] = [
   { name: "HTML", icon: SiHtml5, color: "text-[#E34F26]" },
   { name: "CSS", icon: SiCss, color: "text-[#1572B6]" },
@@ -79,13 +92,18 @@ const skills: Skill[] = [
   { name: "Docker", icon: SiDocker, color: "text-[#2496ED]" },
 ]
 
-const experiences = [
+const experiences: Experience[] = [
   {
     title: "Full Stack Developer Intern",
     company: "Ecoflitz (UK)",
     period: "Jul 2025 - Oct 2025",
     desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
     icon: FiCode,
+    accent: "#06b6d4",
+    accentStrong: "#0891b2",
+    accentSoft: "#67e8f9",
+    glow: "rgba(34, 211, 238, 0.45)",
+    tint: "rgba(6, 182, 212, 0.12)",
   },
   {
     title: "Marketing Intern",
@@ -93,6 +111,11 @@ const experiences = [
     period: "Oct 2025 - Jan 2026",
     desc: "Completed another paid remote internship focused on digital marketing. Developed and executed social media campaigns, created content, and analyzed performance metrics to increase brand awareness and engagement for the incubation center.",
     icon: FiTarget,
+    accent: "#f97316",
+    accentStrong: "#ea580c",
+    accentSoft: "#fdba74",
+    glow: "rgba(249, 115, 22, 0.45)",
+    tint: "rgba(249, 115, 22, 0.12)",
   },
   {
     title: "Chief Executive Officer",
@@ -100,6 +123,11 @@ const experiences = [
     period: "2025 - Present",
     desc: "Founded a digital funeral management startup serving clients across Pakistan. Led development of mobile and web apps using React Native, Next.js, Node.js, MongoDB, Tailwind, and Gemini API. Integrated AI chatbot, therapist agent, and live location features. Oversaw product strategy, marketing, and vendor operations. Achievements: 1st Runner-up at Air University Incubation Center; representing in Hult Prize 2025.",
     icon: FiBriefcase,
+    accent: "#10b981",
+    accentStrong: "#059669",
+    accentSoft: "#6ee7b7",
+    glow: "rgba(16, 185, 129, 0.45)",
+    tint: "rgba(16, 185, 129, 0.12)",
   },
   {
     title: "Marketing Director",
@@ -107,6 +135,11 @@ const experiences = [
     period: "2024 - Present",
     desc: "Managed promotional strategies for AirMUN'25 and AirTech'25, boosting participation by 800+ and creating visual and written content for digital campaigns and event branding.",
     icon: FiTrendingUp,
+    accent: "#8b5cf6",
+    accentStrong: "#7c3aed",
+    accentSoft: "#c4b5fd",
+    glow: "rgba(139, 92, 246, 0.45)",
+    tint: "rgba(139, 92, 246, 0.12)",
   },
   {
     title: "Sponsorship Lead",
@@ -114,6 +147,11 @@ const experiences = [
     period: "2025 - Present",
     desc: "Negotiated and secured sponsorships for university-level tech events and workshops, collaborating with cross-functional teams to build brand partnerships and enhance visibility.",
     icon: FiUsers,
+    accent: "#f59e0b",
+    accentStrong: "#d97706",
+    accentSoft: "#fcd34d",
+    glow: "rgba(245, 158, 11, 0.45)",
+    tint: "rgba(245, 158, 11, 0.12)",
   },
 ]
 
@@ -243,7 +281,9 @@ export default function Home() {
   const [activeTheme, setActiveTheme] = useState<Theme>(themes[0])
   const [isTouch, setIsTouch] = useState(false)
   const omniRef = useRef<HTMLDivElement | null>(null)
-  const [expandedExp, setExpandedExp] = useState<Record<string, boolean>>({})
+  const [activeExperience, setActiveExperience] = useState<number | null>(null)
+  const expScrollRef = useRef<HTMLDivElement | null>(null)
+  const contactScrollRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     // Get initial theme preference (fallback to system preference)
@@ -305,10 +345,6 @@ export default function Home() {
     setMenuOpen(false)
   }
 
-  const toggleExp = (company: string) => {
-    setExpandedExp((prev) => ({ ...prev, [company]: !prev[company] }))
-  }
-
   useEffect(() => {
     if (!omniOpen || !isTouch) return
     const handlePointerDown = (e: PointerEvent) => {
@@ -320,6 +356,69 @@ export default function Home() {
     return () => window.removeEventListener('pointerdown', handlePointerDown)
   }, [omniOpen, isTouch])
 
+  // Infinite scroll for Experience section
+  useEffect(() => {
+    const container = expScrollRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft
+      const scrollWidth = container.scrollWidth
+      const clientWidth = container.clientWidth
+      const cardWidth = clientWidth < 768 ? clientWidth : 0 // Mobile only
+      
+      if (cardWidth === 0) return // Desktop view, no looping needed
+      
+      // Get one card width worth of scroll distance
+      const oneCardScroll = cardWidth + 24 // 24px is the gap
+      const totalCards = experiences.length
+      
+      // When scrolled to near the end, jump back to the beginning
+      if (scrollLeft >= scrollWidth - clientWidth - 100) {
+        container.scrollLeft = oneCardScroll
+      }
+      
+      // When scrolled to the beginning, jump to near the end
+      if (scrollLeft <= 100) {
+        container.scrollLeft = scrollWidth - clientWidth - oneCardScroll
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [experiences.length])
+
+  // Infinite scroll for Contact section
+  useEffect(() => {
+    const container = contactScrollRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft
+      const scrollWidth = container.scrollWidth
+      const clientWidth = container.clientWidth
+      const cardWidth = clientWidth < 768 ? clientWidth : 0 // Mobile only
+      
+      if (cardWidth === 0) return // Desktop view, no looping needed
+      
+      // Get one card width worth of scroll distance
+      const oneCardScroll = cardWidth + 24 // 24px is the gap
+      const totalCards = 3 // Email, WhatsApp, Location
+      
+      // When scrolled to near the end, jump back to the beginning
+      if (scrollLeft >= scrollWidth - clientWidth - 100) {
+        container.scrollLeft = oneCardScroll
+      }
+      
+      // When scrolled to the beginning, jump to near the end
+      if (scrollLeft <= 100) {
+        container.scrollLeft = scrollWidth - clientWidth - oneCardScroll
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const themeStyle = {
     '--accent': activeTheme.accent,
@@ -334,6 +433,45 @@ export default function Home() {
   } as CSSProperties
 
   const orbitThemes = themes.filter((t) => t.name !== activeTheme.name)
+  const activeExp = activeExperience !== null ? experiences[activeExperience] : null
+  const ActiveExperienceIcon = activeExp?.icon ?? FiBriefcase
+
+  const contactCards: Array<{
+    type: string
+    href?: string
+    icon: IconType | null
+    title: string
+    text: string
+    delay: number
+    external?: boolean
+    isDiv?: boolean
+  }> = [
+    {
+      type: 'email',
+      href: 'mailto:muhibnadeem79@gmail.com',
+      icon: FaEnvelope,
+      title: 'Email',
+      text: 'muhibnadeem79@gmail.com',
+      delay: 0.1,
+    },
+    {
+      type: 'whatsapp',
+      href: 'https://wa.me/923057834162',
+      icon: FaWhatsapp,
+      title: 'WhatsApp',
+      text: 'Chat with me',
+      delay: 0.2,
+      external: true,
+    },
+    {
+      type: 'location',
+      icon: null,
+      title: 'Location',
+      text: 'Islamabad, Pakistan',
+      delay: 0.3,
+      isDiv: true,
+    },
+  ]
 
   return (
     <div className="bg-white dark:bg-[#0f172a] text-black dark:text-white transition duration-500" style={themeStyle}>
@@ -354,6 +492,25 @@ export default function Home() {
             .exp-scroll::-webkit-scrollbar {
               width: 0;
               height: 0;
+            }
+            /* Horizontal scroll styles for mobile */
+            [class*="overflow-x-auto"] {
+              scroll-behavior: smooth;
+              scrollbar-width: thin;
+              scrollbar-color: var(--accent) transparent;
+            }
+            [class*="overflow-x-auto"]::-webkit-scrollbar {
+              height: 6px;
+            }
+            [class*="overflow-x-auto"]::-webkit-scrollbar-track {
+              background: transparent;
+            }
+            [class*="overflow-x-auto"]::-webkit-scrollbar-thumb {
+              background: var(--accent);
+              border-radius: 3px;
+            }
+            [class*="overflow-x-auto"]::-webkit-scrollbar-thumb:hover {
+              background: var(--accent-strong);
             }
           `}</style>
 
@@ -545,56 +702,157 @@ export default function Home() {
       </section>
 
       {/* Experience */}
-      <section ref={sections.experience} className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section
+        ref={sections.experience}
+        className="py-20 px-6"
+        onClick={() => setActiveExperience(null)}
+      >
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-10 text-center">Experience</h2>
 
-          <div className="exp-scroll flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4">
-            {experiences.map((exp, i) => {
-              const isExpanded = !!expandedExp[exp.company]
-              const short =
-                exp.desc.length > 160 ? `${exp.desc.slice(0, 160)}...` : exp.desc
-              const Icon = exp.icon ?? FiBriefcase
-              return (
-                <motion.div
-                  key={exp.company}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className="min-w-[280px] md:min-w-[360px] snap-start p-5 rounded-xl bg-white dark:bg-[#0a0e27] border border-[color:var(--accent-30)] shadow-sm hover:shadow-lg transition"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[color:var(--accent-10)] text-[color:var(--accent)] flex items-center justify-center text-xl shadow-[0_0_14px_var(--accent-glow)]">
-                        <Icon />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                          {exp.title}
-                        </h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">{exp.company}</p>
+          {activeExperience === null ? (
+            <div ref={expScrollRef} className="flex md:grid gap-6 md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none py-4 px-2 -mx-2">
+              {[...experiences, ...experiences, ...experiences].map((exp, i) => {
+                const actualIndex = i % experiences.length
+                const Icon = exp.icon ?? FiBriefcase
+                return (
+                  <motion.button
+                    type="button"
+                    key={`exp-${i}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: (i % experiences.length) * 0.08 }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setActiveExperience(actualIndex)
+                    }}
+                    className="flex-shrink-0 snap-start w-full md:w-auto text-left rounded-2xl border p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                    style={{
+                      backgroundImage: `linear-gradient(135deg, ${exp.tint}, rgba(255,255,255,0.92))`,
+                      borderColor: exp.accent,
+                      boxShadow: `0 0 0 1px ${exp.tint}, 0 18px 50px rgba(15, 23, 42, 0.08)`,
+                    }}
+                  >
+                    <div
+                      className="flex items-start justify-between gap-4 rounded-xl p-4 transition"
+                      style={{
+                        backgroundColor: 'rgba(255,255,255,0.55)',
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-12 h-12 rounded-full flex items-center justify-center text-xl text-white shadow-lg"
+                          style={{
+                            backgroundImage: `linear-gradient(135deg, ${exp.accent}, ${exp.accentStrong})`,
+                            boxShadow: `0 0 18px ${exp.glow}`,
+                          }}
+                        >
+                          <Icon />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-gray-900">
+                            {exp.title}
+                          </h3>
+                          <p className="text-xs text-gray-600">{exp.company}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <p className="mt-3 text-xs leading-relaxed text-gray-700 dark:text-gray-300">
-                    {isExpanded ? exp.desc : short}
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-[11px] text-gray-500 dark:text-gray-400">
-                      {exp.period}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => toggleExp(exp.company)}
-                      className="text-[11px] font-semibold text-[color:var(--accent)] hover:text-[color:var(--accent-soft)] transition"
+                    <p className="mt-4 text-xs leading-relaxed text-gray-700">
+                      {exp.desc.length > 160 ? `${exp.desc.slice(0, 160)}...` : exp.desc}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-500">{exp.period}</span>
+                      <span
+                        className="text-[11px] font-semibold"
+                        style={{ color: exp.accentStrong }}
+                      >
+                        Tap to expand
+                      </span>
+                    </div>
+                  </motion.button>
+                )
+              })}
+            </div>
+          ) : (
+            <motion.div
+              key={activeExp!.company}
+              initial={{ opacity: 0, scale: 0.98, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setActiveExperience(null)
+              }}
+              className="min-h-[420px] rounded-[2rem] border p-6 md:p-10 shadow-2xl cursor-pointer overflow-hidden"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${activeExp!.tint}, rgba(255,255,255,0.98) 55%)`,
+                borderColor: activeExp!.accent,
+                boxShadow: `0 0 0 1px ${activeExp!.tint}, 0 30px 80px rgba(15, 23, 42, 0.18)`,
+              }}
+            >
+              <div className="flex h-full flex-col justify-between gap-8">
+                <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-16 h-16 rounded-full flex items-center justify-center text-2xl text-white shadow-2xl"
+                      style={{
+                        backgroundImage: `linear-gradient(135deg, ${activeExp!.accent}, ${activeExp!.accentStrong})`,
+                        boxShadow: `0 0 24px ${activeExp!.glow}`,
+                      }}
                     >
-                      {isExpanded ? 'Show less' : 'Learn More'}
-                    </button>
+                      <ActiveExperienceIcon />
+                    </div>
+                    <div>
+                      <p
+                        className="inline-flex rounded-full px-3 py-1 text-[11px] font-semibold"
+                        style={{
+                          backgroundColor: 'rgba(255,255,255,0.8)',
+                          color: activeExp!.accentStrong,
+                        }}
+                      >
+                        Active Experience
+                      </p>
+                      <h3 className="mt-4 text-2xl font-bold text-gray-950">
+                        {activeExp!.title}
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-gray-700">
+                        {activeExp!.company}
+                      </p>
+                      <p className="mt-2 text-sm text-gray-500">{activeExp!.period}</p>
+                    </div>
                   </div>
-                </motion.div>
-              )
-            })}
-          </div>
+                  <div
+                    className="rounded-2xl px-4 py-3 text-sm font-semibold"
+                    style={{
+                      backgroundColor: 'rgba(255,255,255,0.72)',
+                      color: activeExp!.accentStrong,
+                    }}
+                  >
+                    Click anywhere to return
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
+                  <p className="text-base leading-8 text-gray-800">
+                    {activeExp!.desc}
+                  </p>
+                  <div
+                    className="rounded-2xl p-5 text-white"
+                    style={{
+                      backgroundImage: `linear-gradient(180deg, ${activeExp!.accent}, ${activeExp!.accentStrong})`,
+                      boxShadow: `0 0 30px ${activeExp!.glow}`,
+                    }}
+                  >
+                    <p className="text-sm font-semibold opacity-90">Focus Color</p>
+                    <div className="mt-4 h-24 rounded-xl bg-white/15 border border-white/20" />
+                    <p className="mt-4 text-xs leading-relaxed opacity-90">
+                      This panel uses the selected experience tone so the active card feels visually distinct.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
           <div className="mt-4 flex items-center justify-center gap-2">
             <span className="h-1.5 w-6 rounded-full bg-gray-300 dark:bg-gray-700" />
             <span className="h-1.5 w-3 rounded-full bg-[color:var(--accent)]" />
@@ -723,48 +981,45 @@ export default function Home() {
           </motion.div>
 
           {/* Contact Info Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {/* Email Card */}
-            <motion.a
-              href="mailto:muhibnadeem79@gmail.com"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] hover:border-[color:var(--accent)] transition shadow-lg"
-            >
-              <div className="text-3xl text-[color:var(--accent)] mb-3"><FaEnvelope /></div>
-              <h3 className="font-semibold mb-2">Email</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">muhibnadeem79@gmail.com</p>
-            </motion.a>
-
-            {/* Phone Card */}
-            <motion.a
-              href="https://wa.me/923057834162"
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.05 }}
-              className="p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] hover:border-[color:var(--accent)] transition shadow-lg"
-            >
-              <div className="text-3xl text-[color:var(--accent)] mb-3"><FaWhatsapp /></div>
-              <h3 className="font-semibold mb-2">WhatsApp</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Chat with me</p>
-            </motion.a>
-
-            {/* Location Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] shadow-lg"
-            >
-              <div className="text-3xl text-[color:var(--accent)] mb-3">📍</div>
-              <h3 className="font-semibold mb-2">Location</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Islamabad, Pakistan</p>
-            </motion.div>
+          <div ref={contactScrollRef} className="flex md:grid gap-6 md:grid-cols-3 mb-12 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory py-4 px-2 -mx-2">
+            {[...contactCards, ...contactCards, ...contactCards].map((card, i) => {
+              const actualIndex = i % contactCards.length
+              const CardIcon = card.icon as IconType | null
+              
+              if (card.isDiv) {
+                return (
+                  <motion.div
+                    key={`contact-${i}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: card.delay }}
+                    className="flex-shrink-0 snap-start w-full md:w-auto p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] shadow-lg"
+                  >
+                    <div className="text-3xl text-[color:var(--accent)] mb-3">📍</div>
+                    <h3 className="font-semibold mb-2">{card.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{card.text}</p>
+                  </motion.div>
+                )
+              }
+              
+              return (
+                <motion.a
+                  key={`contact-${i}`}
+                  href={card.href!}
+                  target={card.external ? '_blank' : undefined}
+                  rel={card.external ? 'noopener noreferrer' : undefined}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: card.delay }}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-shrink-0 snap-start w-full md:w-auto p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] hover:border-[color:var(--accent)] transition shadow-lg"
+                >
+                  <div className="text-3xl text-[color:var(--accent)] mb-3">{CardIcon ? <CardIcon /> : null}</div>
+                  <h3 className="font-semibold mb-2">{card.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{card.text}</p>
+                </motion.a>
+              )
+            })}
           </div>
 
           {/* Social Icons */}
