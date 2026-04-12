@@ -500,24 +500,15 @@ export default function Home() {
               width: 0;
               height: 0;
             }
-            /* Horizontal scroll styles for mobile */
+            /* Hide scrollbars for horizontal scroll */
             [class*="overflow-x-auto"] {
               scroll-behavior: smooth;
-              scrollbar-width: thin;
-              scrollbar-color: var(--accent) transparent;
+              scrollbar-width: none;
+              -ms-overflow-style: none;
             }
             [class*="overflow-x-auto"]::-webkit-scrollbar {
-              height: 6px;
-            }
-            [class*="overflow-x-auto"]::-webkit-scrollbar-track {
-              background: transparent;
-            }
-            [class*="overflow-x-auto"]::-webkit-scrollbar-thumb {
-              background: var(--accent);
-              border-radius: 3px;
-            }
-            [class*="overflow-x-auto"]::-webkit-scrollbar-thumb:hover {
-              background: var(--accent-strong);
+              width: 0;
+              height: 0;
             }
           `}</style>
 
