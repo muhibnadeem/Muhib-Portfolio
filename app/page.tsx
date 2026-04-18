@@ -5,7 +5,7 @@ import { useRef, useState, useEffect, CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import { IconType } from 'react-icons'
-import { FiMenu, FiX, FiDownload, FiCode, FiBriefcase, FiTrendingUp, FiUsers, FiTarget } from 'react-icons/fi'
+import { FiMenu, FiX, FiDownload, FiCode, FiBriefcase, FiTrendingUp, FiUsers, FiTarget, FiAward } from 'react-icons/fi'
 import { FaGithub, FaLinkedin, FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import {
   SiHtml5, SiCss, SiJavascript, SiTypescript, SiReact, SiNextdotjs,
@@ -14,6 +14,7 @@ import {
   SiOpenjdk, SiMysql, SiMongodb, SiFirebase, SiSupabase, SiGit,
   SiGithub, SiDocker
 } from 'react-icons/si'
+import { ACTION_HEADER } from 'next/dist/client/components/app-router-headers'
 
 type Skill = {
   name: string;
@@ -49,6 +50,14 @@ type Experience = {
   accentSoft: string;
   glow: string;
   tint: string;
+}
+
+type Achievement = {
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  image: string;
 }
 
 const skills: Skill[] = [
@@ -101,26 +110,11 @@ const experiences: Experience[] = [
   period: "Aug 2025 - Oct 2025",
   desc: "Completed a paid remote 3-month internship. Built full-stack web projects with Next.js, React, MySQL, and Node.js. Implemented secure authentication, REST APIs, and optimized backend queries. Collaborated with cross-functional teams to ship production-ready features.",
 
-  detailedDesc: `During my 3-month internship at Ecoflitz, I built and deployed multiple full-stack applications with a focus on performance, scalability, and clean architecture.
-
-I developed secure REST APIs with role-based access control and JWT authentication, optimized database queries to improve response time by 40%, and created responsive UIs using React, Next.js, and Tailwind CSS.
-
-I also worked in a professional environment using Git, participated in code reviews, and followed agile methodologies, strengthening both my technical and teamwork skills.
-
-Key Projects:
-
+  detailedDesc: `Key Projects:
 • Full-Stack E-commerce Website  
-- Built using Next.js, Node.js, and MySQL  
-- Implemented product listings, cart, and dynamic product pages  
-- Developed secure authentication and order management system  
-- Designed REST APIs for products, users, and transactions  
-
+- Built using Next.js, Node.js, and MySQL. Implemented product listings, cart, and dynamic product pages. Developed secure authentication and order management system. Designed REST APIs for products, users, and transactions  
 • Product Tracker Web App  
-- Built a full-stack app with user-specific dashboards  
-- Implemented secure login/signup with protected routes  
-- Integrated MySQL for personalized product management  
-
-This experience significantly strengthened my expertise in Next.js, Node.js, MySQL, API development, and scalable system design.`,
+- Built a full-stack app with user-specific dashboards. Implemented secure login/signup with protected routes. Integrated MySQL for personalized product management`,
 
   image: "Ecoflitz Internship Certificate.png",
   icon: FiCode,
@@ -136,7 +130,7 @@ This experience significantly strengthened my expertise in Next.js, Node.js, MyS
     period: "Oct 2025 - Jan 2026",
     desc: "Completed another paid remote internship focused on digital marketing. Developed and executed social media campaigns, created content, and analyzed performance metrics to increase brand awareness and engagement for the incubation center.",
     detailedDesc: "Led marketing campaigns for Air University Incubation Center's multiple events and initiatives. Created engaging social media content including graphics, videos, and copy for platforms like Instagram, LinkedIn, and Facebook. Analyzed campaign metrics using Google Analytics and social media insights to drive data-driven decisions. Collaborated with event teams to ensure consistent brand messaging. Result: increased social media engagement by 250% and drove 500+ registrations for incubation events through targeted campaigns.",
-    image: "air-university.png",
+    image: "AUBIC Certificate.png",
     icon: FiTarget,
     accent: "#f97316",
     accentStrong: "#ea580c",
@@ -150,7 +144,7 @@ This experience significantly strengthened my expertise in Next.js, Node.js, MyS
     period: "2025 - Present",
     desc: "Founded a digital funeral management startup serving clients across Pakistan. Led development of mobile and web apps using React Native, Next.js, Node.js, MongoDB, Tailwind, and Gemini API. Integrated AI chatbot, therapist agent, and live location features. Oversaw product strategy, marketing, and vendor operations. Achievements: 1st Runner-up at Air University Incubation Center; representing in Hult Prize 2025.",
     detailedDesc: "Founded and scaled Khuda Hafiz from concept to fully operational product handling sensitive funeral management operations across Pakistan. Led full product development including mobile app (React Native), web platform (Next.js), and backend architecture (Node.js + MongoDB). Integrated advanced features: AI chatbot using Gemini API for customer support, therapist agent for grief counseling, and real-time location tracking. Managed cross-functional teams covering development, design, and business operations. Secured angel investment and achieved 1st Runner-up position at Air University Incubation Center. Currently representing at Hult Prize 2025 global competition.",
-    image: "khuda-hafiz.png",
+    image: "khuda hafiz.jpeg",
     icon: FiBriefcase,
     accent: "#10b981",
     accentStrong: "#059669",
@@ -164,7 +158,7 @@ This experience significantly strengthened my expertise in Next.js, Node.js, MyS
     period: "2024 - Present",
     desc: "Managed promotional strategies for AirMUN'25 and AirTech'25, boosting participation by 800+ and creating visual and written content for digital campaigns and event branding.",
     detailedDesc: "Led marketing initiatives for two flagship events at Google Developer Groups chapter. For AirMUN'25: designed comprehensive marketing strategy increasing participation from 200 to 800+ students through targeted social media campaigns and partnerships. For AirTech'25: created visual branding, promotional videos, and event copy that resonated with developer community. Developed event landing pages, managed email marketing campaigns, and coordinated with sponsors for maximum impact. Used analytics to optimize campaign performance and achieved 35% increase in event registrations year-over-year.",
-    image: "gdg-air.png",
+    image: "GDG Marketing Lead.png",
     icon: FiTrendingUp,
     accent: "#8b5cf6",
     accentStrong: "#7c3aed",
@@ -178,7 +172,7 @@ This experience significantly strengthened my expertise in Next.js, Node.js, MyS
     period: "2025 - Present",
     desc: "Negotiated and secured sponsorships for university-level tech events and workshops, collaborating with cross-functional teams to build brand partnerships and enhance visibility.",
     detailedDesc: "Spearheaded sponsorship acquisition strategy for Microsoft Learn Student Ambassador Society at Air University. Successfully negotiated partnerships with 15+ tech companies including Microsoft, Google, and leading startups. Developed comprehensive sponsorship proposals highlighting mutual benefits and ROI. Coordinated between sponsor brands and event teams to ensure successful activations and brand visibility. Increased total sponsorship value from PKR 200K to PKR 1.2M annually. Built lasting relationships with corporate partners, resulting in long-term collaboration commitments and repeat sponsorships for multiple events.",
-    image: "microsoft-ambassador.png",
+    image: "mlsa.jpeg",
     icon: FiUsers,
     accent: "#f59e0b",
     accentStrong: "#d97706",
@@ -306,6 +300,37 @@ const projects = [
   },
 ]
 
+const achievements: Achievement[] = [
+  {
+    title: "National Skills Competency Test",
+    issuer: "Higher Education Commission (HEC) Pakistan",
+    year: "2026",
+    description: "Achieved top 4.7% ranking nationwide in the National Skills Competency Test for Software Development, demonstrating advanced proficiency in programming, problem-solving, and software engineering principles among thousands of participants.",
+    image: "nsct.jpeg",
+  },
+  {
+    title: "Vyrothon Hackathon Participant",
+    issuer: "Vyro.AI",
+    year: "2026",
+    description: "One of just 120 participants selected from a competitive pool of 500+ candidates across Pakistan to compete in the Vyrothon Hackathon. Developed and integrated innovative AI solutions using Vyro.AI’s advanced technology, proving the ability to deliver high-quality prototypes within rigorous, time-sensitive constraints.",
+    image: "AUBIC Certificate.png",
+  },
+  {
+    title: "Air University Ambassador",
+    issuer: "AirMUN'25- Air University",
+    year: "2025",
+    description: "Selected as the only ambassador for AirMUN'25, representing Air University in organizing and promoting the prestigious Model United Nations conference. Responsibilities included outreach, event coordination, and fostering international relations among participating universities.",
+    image: "mun-amb.jpeg",
+  },
+  {
+    title: "AirMUN Marketing Director",
+    issuer: "AirMUN'25- Air University",
+    year: "2025",
+    description: "Appointed as Marketing Director for AirMUN'25, leading the promotional strategy and execution for one of the largest Model United Nations conferences in Pakistan. Successfully increased event participation by 300% through innovative digital campaigns, content creation, and strategic partnerships.",
+    image: "mun-dir.jpeg",
+  },
+]
+
 export default function Home() {
   const [dark, setDark] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -316,7 +341,6 @@ export default function Home() {
   const omniRef = useRef<HTMLDivElement | null>(null)
   const [activeExperience, setActiveExperience] = useState<number | null>(null)
   const expScrollRef = useRef<HTMLDivElement | null>(null)
-  const contactScrollRef = useRef<HTMLDivElement | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -377,6 +401,7 @@ export default function Home() {
     experience: useRef(null),
     skills: useRef(null),
     projects: useRef(null),
+    acheivments: useRef(null),
     contact: useRef(null),
   }
 
@@ -427,38 +452,6 @@ export default function Home() {
     container.addEventListener('scroll', handleScroll)
     return () => container.removeEventListener('scroll', handleScroll)
   }, [experiences.length])
-
-  // Infinite scroll for Contact section
-  useEffect(() => {
-    const container = contactScrollRef.current
-    if (!container) return
-
-    const handleScroll = () => {
-      const scrollLeft = container.scrollLeft
-      const scrollWidth = container.scrollWidth
-      const clientWidth = container.clientWidth
-      const cardWidth = clientWidth < 768 ? clientWidth : 0 // Mobile only
-      
-      if (cardWidth === 0) return // Desktop view, no looping needed
-      
-      // Get one card width worth of scroll distance
-      const oneCardScroll = cardWidth + 24 // 24px is the gap
-      const totalCards = 3 // Email, WhatsApp, Location
-      
-      // When scrolled to near the end, jump back to the beginning
-      if (scrollLeft >= scrollWidth - clientWidth - 100) {
-        container.scrollLeft = oneCardScroll
-      }
-      
-      // When scrolled to the beginning, jump to near the end
-      if (scrollLeft <= 100) {
-        container.scrollLeft = scrollWidth - clientWidth - oneCardScroll
-      }
-    }
-
-    container.addEventListener('scroll', handleScroll)
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const themeStyle = {
     '--accent': activeTheme.accent,
@@ -552,9 +545,9 @@ export default function Home() {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            {Object.entries(sections).map(([key, ref]) => (
+            {Object.entries(sections).filter(([key]) => key !== 'contact').map(([key, ref]) => (
               <button key={key} onClick={() => scrollTo(ref)} className="capitalize hover:text-[color:var(--accent-soft)] transition text-sm font-medium">
-                {key}
+                {key === 'acheivments' ? 'Acheivements' : key}
               </button>
             ))}
           </div>
@@ -585,9 +578,9 @@ export default function Home() {
             className="md:hidden bg-white dark:bg-[#1a1f3a] border-t border-gray-200 dark:border-gray-800"
           >
             <div className="flex flex-col px-6 py-4 gap-3">
-              {Object.entries(sections).map(([key, ref]) => (
+              {Object.entries(sections).filter(([key]) => key !== 'contact').map(([key, ref]) => (
                 <button key={key} onClick={() => scrollTo(ref)} className="capitalize hover:text-[color:var(--accent-soft)] transition text-left font-medium py-2">
-                  {key}
+                  {key === 'acheivments' ? 'Acheivements' : key}
                 </button>
               ))}
             </div>
@@ -605,7 +598,6 @@ export default function Home() {
               sequence={[
                 'Software Engineer', 2000,
                 'Web Developer', 2000,
-                'Web Designer', 2000,
                 'App Developer', 2000,
               ]}
               wrapper="span"
@@ -711,7 +703,7 @@ export default function Home() {
             className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 space-y-4"
           >
             <p>
-              I'm a passionate full-stack developer with a strong foundation in web development. With expertise in modern technologies like React, Next.js, and Node.js, I build scalable and user-friendly applications.
+              I'm a Software Engineer and a passionate full-stack developer with a strong foundation in web development. With expertise in modern technologies like React, Next.js, and Node.js, I build scalable and user-friendly applications.
             </p>
             <p>
               My journey in tech has been driven by a curiosity to solve real-world problems. I love collaborating with teams and continuously learning new technologies to stay ahead in this fast-paced industry.
@@ -987,8 +979,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Acheivments */}
+      <section ref={sections.acheivments} className="py-20 px-6 bg-gray-50 dark:bg-[#0a0e27]">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-[color:var(--accent-10)] border border-[color:var(--accent-30)] flex items-center justify-center text-3xl text-[color:var(--accent)]">
+              <FiAward />
+            </div>
+            <h2 className="text-4xl font-bold mb-4">Acheivments & Certificates</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              A curated collection of certificates and recognitions that reflect my work across development, leadership, and marketing.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {achievements.map((achievement, i) => (
+              <motion.div
+                key={achievement.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="overflow-hidden rounded-2xl bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] shadow-lg hover:shadow-xl transition"
+              >
+                <div className="relative h-52 overflow-hidden bg-black/10">
+                  <img
+                    src={achievement.image}
+                    alt={achievement.title}
+                    className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                  />
+                  <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/65 px-3 py-1 text-xs font-semibold text-white">
+                    <FiAward />
+                    <span>{achievement.year}</span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)] mb-2">
+                    {achievement.issuer}
+                  </p>
+                  <h3 className="text-xl font-bold mb-3">{achievement.title}</h3>
+                  <p className="text-sm leading-6 text-gray-600 dark:text-gray-400">
+                    {achievement.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
-      <section ref={sections.contact} className="py-20 px-6 bg-gray-50 dark:bg-[#0a0e27]">
+      <section ref={sections.contact} className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1003,9 +1049,8 @@ export default function Home() {
           </motion.div>
 
           {/* Contact Info Cards */}
-          <div ref={contactScrollRef} className="flex md:grid gap-6 md:grid-cols-3 mb-12 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory py-4 px-2 -mx-2">
-            {(isMobile ? [...contactCards, ...contactCards, ...contactCards] : contactCards).map((card, i) => {
-              const actualIndex = i % contactCards.length
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+            {contactCards.map((card, i) => {
               const CardIcon = card.icon as IconType | null
               
               if (card.isDiv) {
@@ -1015,7 +1060,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: card.delay }}
-                    className="flex-shrink-0 snap-start w-full md:w-auto p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] shadow-lg"
+                    className="w-full p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] shadow-lg"
                   >
                     <div className="text-3xl text-[color:var(--accent)] mb-3">📍</div>
                     <h3 className="font-semibold mb-2">{card.title}</h3>
@@ -1034,7 +1079,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: card.delay }}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 snap-start w-full md:w-auto p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] hover:border-[color:var(--accent)] transition shadow-lg"
+                  className="w-full p-6 rounded-lg bg-white dark:bg-[#020617] border border-[color:var(--accent-30)] hover:border-[color:var(--accent)] transition shadow-lg"
                 >
                   <div className="text-3xl text-[color:var(--accent)] mb-3">{CardIcon ? <CardIcon /> : null}</div>
                   <h3 className="font-semibold mb-2">{card.title}</h3>
