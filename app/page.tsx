@@ -625,7 +625,7 @@ export default function Home() {
             />
           </h3>
           <motion.a
-            href="/Muhib-cv.pdf"
+            href="/MuhibNadeemCv (2).pdf"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
