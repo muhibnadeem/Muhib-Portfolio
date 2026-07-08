@@ -259,6 +259,14 @@ const themes: Theme[] = [
 
 const projects = [
   {
+    title: "Khuda Hafiz App",
+    desc: "A digital funeral management platform that connects users with local service providers, offering a seamless experience for booking and managing funeral services.",
+    tech: ["React Native", "Node.js", "MongoDB", "Firebase","Nativewind CSS", "Gemini API"],
+    image: "khuda hafiz.jpeg",
+    live: "https://expo.dev/accounts/muhib-using-expos-organization/projects/khuda-hafiz/builds/69aff8d6-be7f-437a-add5-ecdec4563a37",
+    github: "https://github.com/hadiaeman060-collab/khuda-hafiz-fyp.git",
+  },
+  {
     title: "Mr Fix & Build",
     desc: "A modern service marketplace platform where users can find and hire professionals for home services with a clean UI and smooth user experience.",
     tech: ["Next.js", "React", "Tailwind CSS", "API Integration"],
@@ -267,12 +275,12 @@ const projects = [
     github: "https://github.com/muhibnadeem/Mr.FixAndBuild.git",
   },
   {
-    title: "Bus Route Planner",
-    desc: "Smart system to help users navigate city buses easily.",
-    tech: ["React", "Node", "Maps API"],
-    image: "https://via.placeholder.com/400x200?text=Bus+Route+Planner",
-    live: "https://bus-route-planner.vercel.app",
-    github: "https://github.com/yourusername/bus-route-planner",
+    title: "Fixora",
+    desc: "A comprehensive platform for connecting users with local service providers, offering a seamless experience for booking and managing home services.",
+    tech: ["Next.js", "React", "Tailwind CSS", "API Integration"],
+    image: "fixora.png",
+    live: "https://fixora-uk.vercel.app",
+    github: "https://github.com/muhibnadeem/Fixora.git",
   },
   {
     title: "Creepy Link",
@@ -313,7 +321,7 @@ const achievements: Achievement[] = [
     issuer: "Vyro.AI",
     year: "2026",
     description: "One of just 120 participants selected from a competitive pool of 500+ candidates across Pakistan to compete in the Vyrothon Hackathon. Developed and integrated innovative AI solutions using Vyro.AI’s advanced technology, proving the ability to deliver high-quality prototypes within rigorous, time-sensitive constraints.",
-    image: "AUBIC Certificate.png",
+    image: "vyrothon_certificate.jpeg",
   },
   {
     title: "Air University Ambassador",
@@ -583,6 +591,14 @@ export default function Home() {
                   {key === 'acheivments' ? 'Acheivements' : key}
                 </button>
               ))}
+              <motion.button
+                onClick={() => scrollTo(sections.contact)}
+                whileTap={{ scale: 0.97 }}
+                className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--accent)] px-5 py-3 font-semibold text-white shadow-lg shadow-[color:var(--accent-20)] transition hover:bg-[color:var(--accent-strong)]"
+              >
+                <FaEnvelope className="text-base" />
+                Contact
+              </motion.button>
             </div>
           </motion.div>
         )}
